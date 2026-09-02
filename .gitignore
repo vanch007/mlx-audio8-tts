@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+models/
+*.wav
+*.mp3
+reports/audio/
+.pytest_cache/
+.ruff_cache/
+upstream_model_code/
+*.pth
+*.safetensors
+!codec.safetensors

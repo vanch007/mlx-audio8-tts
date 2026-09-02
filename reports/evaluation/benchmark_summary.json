@@ -1,0 +1,154 @@
+{
+  "model": "Audio8-TTS-Preview-0.6b-bf16",
+  "architecture": "DualAR (24L Slow + 4L Fast) + 44.1kHz Codec",
+  "hardware": "Apple Silicon M3 Max",
+  "sample_rate": 44100,
+  "model_load_time_s": 0.374,
+  "total_cases": 13,
+  "all_passed": true,
+  "results": [
+    {
+      "category": "language_baseline",
+      "language": "zh",
+      "language_name": "中文",
+      "text": "欢迎使用 Audio8 文本转语音模型。",
+      "duration_s": 6.966,
+      "elapsed_s": 10.34,
+      "rtf": 1.484,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_zh.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "yue",
+      "language_name": "粤语",
+      "text": "今日天气真系好，等阵我哋一齐去饮茶啦。",
+      "duration_s": 6.966,
+      "elapsed_s": 8.941,
+      "rtf": 1.284,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_yue.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "en",
+      "language_name": "English",
+      "text": "Welcome to the Audio8 multilingual text-to-speech model on Apple Silicon.",
+      "duration_s": 6.966,
+      "elapsed_s": 8.671,
+      "rtf": 1.245,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_en.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "ja",
+      "language_name": "日语",
+      "text": "こんにちは、新しい音声合成システムへようこそ。",
+      "duration_s": 6.966,
+      "elapsed_s": 8.686,
+      "rtf": 1.247,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_ja.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "ko",
+      "language_name": "韩语",
+      "text": "안녕하세요, 새로운 음성 합성 시스템에 오신 것을 환영합니다.",
+      "duration_s": 6.966,
+      "elapsed_s": 8.958,
+      "rtf": 1.286,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_ko.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "fr",
+      "language_name": "法语",
+      "text": "Bonjour, bienvenue dans le système de synthèse vocale Audio8.",
+      "duration_s": 6.966,
+      "elapsed_s": 9.094,
+      "rtf": 1.306,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_fr.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "de",
+      "language_name": "德语",
+      "text": "Guten Tag und herzlich willkommen bei Audio8 Sprachausgabe.",
+      "duration_s": 6.966,
+      "elapsed_s": 9.136,
+      "rtf": 1.312,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_de.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "es",
+      "language_name": "西班牙语",
+      "text": "Hola, bienvenido al modelo de texto a voz multilingüe Audio8.",
+      "duration_s": 6.966,
+      "elapsed_s": 9.251,
+      "rtf": 1.328,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_es.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "it",
+      "language_name": "意大利语",
+      "text": "Buongiorno, benvenuti nel sistema di sintesi vocale Audio8.",
+      "duration_s": 6.966,
+      "elapsed_s": 9.155,
+      "rtf": 1.314,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_it.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "nl",
+      "language_name": "荷兰语",
+      "text": "Hallo en welkom bij de Audio8 spraaksynthese voor Apple Silicon.",
+      "duration_s": 6.966,
+      "elapsed_s": 9.373,
+      "rtf": 1.346,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_nl.wav",
+      "status": "pass"
+    },
+    {
+      "category": "language_baseline",
+      "language": "pl",
+      "language_name": "波兰语",
+      "text": "Dzień dobry, witamy w systemie syntezy mowy Audio8.",
+      "duration_s": 6.966,
+      "elapsed_s": 9.214,
+      "rtf": 1.323,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_pl.wav",
+      "status": "pass"
+    },
+    {
+      "category": "voice_clone",
+      "language": "zh",
+      "text": "零样本声音克隆实机验证：克隆中文发音特征进行全新句子朗读。",
+      "ref_audio": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/lang_zh.wav",
+      "duration_s": 6.966,
+      "elapsed_s": 9.674,
+      "rtf": 1.389,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/voice_clone_zh.wav",
+      "status": "pass"
+    },
+    {
+      "category": "streaming",
+      "text": "流式语音生成实机测试，评估首包延迟与帧间隔平稳性。",
+      "ttfa_s": 0.1455,
+      "chunks": 75,
+      "duration_s": 6.966,
+      "elapsed_s": 8.846,
+      "rtf": 1.27,
+      "audio_path": "/Users/vanch/mlx-audio8-tts/reports/evaluation/audio/stream_eval.wav",
+      "status": "pass"
+    }
+  ]
+}

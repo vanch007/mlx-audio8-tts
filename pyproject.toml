@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlx-audio8-tts"
+version = "0.1.0"
+description = "Standalone Audio8 TTS (ArkTTS) inference, conversion, and serving on Apple Silicon with MLX"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = [
+  "huggingface-hub>=0.27",
+  "mlx>=0.31.0",
+  "numpy>=1.26",
+  "safetensors>=0.4",
+  "scipy>=1.10",
+  "soundfile>=0.12",
+  "transformers>=4.48",
+]
+
+[project.optional-dependencies]
+server = [
+  "fastapi>=0.115",
+  "httpx>=0.28",
+  "python-multipart>=0.0.20",
+  "uvicorn>=0.34",
+]
+dev = ["pytest>=8", "ruff>=0.9"]
+evaluation = [
+  "librosa>=0.11",
+  "speechbrain>=1.1",
+  "torch>=2.5",
+  "torchaudio>=2.5",
+]
+
+[project.scripts]
+mlx-audio8-tts = "mlx_audio8_tts.cli:main"
+mlx-audio8 = "mlx_audio8_tts.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
