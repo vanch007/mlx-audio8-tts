@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-09-03T03:06:23.585762+00:00",
+  "model": "models/Audio8-TTS-Preview-0.6b-8bit",
+  "hardware": "Apple M3 Max",
+  "sample_rate": 44100,
+  "max_new_tokens": 150,
+  "model_load_time_s": 0.387,
+  "measurement": "single seeded steady-state run per language after warm-up",
+  "results": [
+    {
+      "language": "en",
+      "language_name": "English",
+      "text": "Welcome to the Audio8 multilingual text-to-speech model on Apple Silicon.",
+      "duration_s": 6.966,
+      "elapsed_s": 6.85,
+      "rtf": 0.983,
+      "audio_path": "reports/evaluation/8bit-release/audio/en.wav",
+      "status": "pass"
+    },
+    {
+      "language": "zh",
+      "language_name": "Chinese",
+      "text": "欢迎使用 Audio8 多语言文本转语音模型，在苹果芯片上进行原生推理。",
+      "duration_s": 6.966,
+      "elapsed_s": 6.422,
+      "rtf": 0.922,
+      "audio_path": "reports/evaluation/8bit-release/audio/zh.wav",
+      "status": "pass"
+    },
+    {
+      "language": "yue",
+      "language_name": "Cantonese",
+      "text": "今日天气真系几好，等阵我哋一齐去饮茶啦。",
+      "duration_s": 6.966,
+      "elapsed_s": 5.527,
+      "rtf": 0.793,
+      "audio_path": "reports/evaluation/8bit-release/audio/yue.wav",
+      "status": "pass"
+    }
+  ],
+  "all_passed": true
+}

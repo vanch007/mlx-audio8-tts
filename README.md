@@ -9,7 +9,7 @@ Standalone Apple Silicon MLX port of
 
 | Variant | Hugging Face | LM weights | Complete download | M3 Max RTF |
 |---|---|---:|---:|---:|
-| 8-bit `sensitive-bf16` | [Audio8-TTS-MLX-8bit](https://huggingface.co/vanch007/Audio8-TTS-MLX-8bit) | 827 MiB | 2.08 GiB | 0.64–0.82 |
+| 8-bit `sensitive-bf16` | [Audio8-TTS-MLX-8bit](https://huggingface.co/vanch007/Audio8-TTS-MLX-8bit) | 827 MiB | 2.08 GiB | 0.79–0.98 |
 | BF16 baseline | [Audio8-TTS-MLX-BF16](https://huggingface.co/vanch007/Audio8-TTS-MLX-BF16) | 1,147 MiB | 2.39 GiB | 1.24–1.48 |
 
 The complete download includes the shared 1.26 GiB, 44.1 kHz neural codec and
@@ -159,7 +159,9 @@ pytest -q
 
 Real-device evidence is stored under [`reports/evaluation`](reports/evaluation).
 The checked-in BF16 matrix contains 11 languages, voice cloning, and streaming.
-RTF excludes model download time; lower is better.
+The [8-bit release benchmark](reports/evaluation/8bit-release/REPORT.md) records
+seeded, post-warm-up English, Chinese, and Cantonese runs. RTF excludes model
+download, model loading, and warm-up time; lower is better.
 
 ## License and attribution
 
