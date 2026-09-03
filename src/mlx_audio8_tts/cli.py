@@ -1,4 +1,6 @@
 import argparse
+import json
+import time
 
 import numpy as np
 
@@ -76,6 +78,7 @@ def main():
 
     if args.command == "generate":
         tts = load(args.model)
+        t0 = time.perf_counter()
         if args.stream:
             chunks = list(
                 tts.generate(
@@ -102,8 +105,12 @@ def main():
                     top_k=args.top_k,
                 )
             )
+        elapsed = time.perf_counter() - t0
+        duration = float(len(audio) / tts.sample_rate)
+        rtf = elapsed / duration if duration > 0 else 0.0
         write_audio(args.output, audio, tts.sample_rate)
-        print(f"Audio saved to {args.output} ({len(audio) / tts.sample_rate:.2f}s)")
+        print(json.dumps({"task": "tts", "elapsed_s": round(elapsed, 4), "duration_s": round(duration, 4), "real_time_factor": round(rtf, 4)}))
+        print(f"Audio saved to {args.output} ({duration:.2f}s)")
 
     elif args.command == "convert":
         meta = convert_and_save(
