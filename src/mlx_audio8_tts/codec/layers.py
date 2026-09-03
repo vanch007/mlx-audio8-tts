@@ -130,20 +130,34 @@ class ArkttsCausalConvTranspose1d(nn.Module):
         return x
 
 
+class Sequential(nn.Module):
+    def __init__(self, *modules):
+        super().__init__()
+        self._modules_list = list(modules)
+        for i, m in enumerate(modules):
+            setattr(self, str(i), m)
+
+    def __call__(self, x: mx.array) -> mx.array:
+        for m in self._modules_list:
+            x = m(x)
+        return x
+
+
 class ArkttsResidualUnit(nn.Module):
     def __init__(self, dim: int, dilation: int):
         super().__init__()
-        self.snake1 = ArkttsSnake1d(dim)
-        self.conv1 = ArkttsCausalConv1d(dim, dim, kernel_size=7, dilation=dilation)
-        self.snake2 = ArkttsSnake1d(dim)
-        self.conv2 = ArkttsCausalConv1d(dim, dim, kernel_size=1)
+        self.block = [
+            ArkttsSnake1d(dim),
+            ArkttsCausalConv1d(dim, dim, kernel_size=7, dilation=dilation),
+            ArkttsSnake1d(dim),
+            ArkttsCausalConv1d(dim, dim, kernel_size=1),
+        ]
 
     def __call__(self, x: mx.array) -> mx.array:
         residual = x
-        out = self.snake1(x)
-        out = self.conv1(out)
-        out = self.snake2(out)
-        out = self.conv2(out)
+        out = x
+        for layer in self.block:
+            out = layer(out)
         diff = residual.shape[1] - out.shape[1]
         if diff > 0:
             residual = residual[:, :-diff, :]

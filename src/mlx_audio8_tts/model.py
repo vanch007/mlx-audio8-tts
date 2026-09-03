@@ -86,7 +86,7 @@ class ArkttsAttention(nn.Module):
             v = mx.concatenate([v_cache, v], axis=2)
             new_cache = (k, v)
         else:
-            new_cache = None
+            new_cache = (k, v)
 
         if self.n_local_heads < self.n_head:
             repeat = self.n_head // self.n_local_heads
@@ -350,39 +350,37 @@ class ArkttsModel(nn.Module):
         recent_semantic = []
         stream_buffer = []
 
+        sem_begin = self.config.semantic_begin_id
+        sem_end = self.config.semantic_end_id
+        eos_id = self.config.eos_token_id
+        num_sem = sem_end - sem_begin + 1
+
         for step in range(max_new_tokens):
-            # Apply semantic mask: only allow [semantic_begin_id, semantic_end_id] and eos_token_id
-            mask = mx.full(logits.shape, -1e9)
-            # Allow semantic tokens and EOS
-            indices = mx.arange(self.config.semantic_begin_id, self.config.semantic_end_id + 1)
-            logits_slice = logits[:, self.config.semantic_begin_id : self.config.semantic_end_id + 1]
-            eos_logit = logits[:, self.config.eos_token_id : self.config.eos_token_id + 1]
+            # Candidates: semantic tokens [sem_begin, sem_end] + eos_token_id
+            sem_logits = logits[:, sem_begin : sem_end + 1]
+            eos_logit = logits[:, eos_id : eos_id + 1]
+            candidate_logits = mx.concatenate([sem_logits, eos_logit], axis=-1)
 
             # Sample semantic token with Repetition-Aware Sampling (RAS)
-            sampled_token = int(_sample(logits, temperature=temperature, top_k=top_k, top_p=top_p).item())
-            if (
-                sampled_token < self.config.semantic_begin_id
-                or sampled_token > self.config.semantic_end_id
-            ) and sampled_token != self.config.eos_token_id:
-                # Fallback to argmax over allowed semantic range
-                sampled_token = int(
-                    (self.config.semantic_begin_id + mx.argmax(logits_slice, axis=-1)).item()
-                )
+            sampled_idx = int(_sample(candidate_logits, temperature=temperature, top_k=top_k, top_p=top_p).item())
+            sampled_token = sem_begin + sampled_idx if sampled_idx < num_sem else eos_id
 
             # Repetition detection
             if (
                 len(recent_semantic) >= self.config.ras_window_size
                 and sampled_token in recent_semantic[-self.config.ras_window_size :]
+                and sampled_token != eos_id
             ):
                 # Repetition detected: sample with higher temperature
-                sampled_token = int(
+                sampled_idx = int(
                     _sample(
-                        logits,
+                        candidate_logits,
                         temperature=self.config.ras_temperature,
                         top_k=top_k,
                         top_p=self.config.ras_top_p,
                     ).item()
                 )
+                sampled_token = sem_begin + sampled_idx if sampled_idx < num_sem else eos_id
 
             if sampled_token == self.config.eos_token_id:
                 break
