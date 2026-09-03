@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Generator, Optional, Union
 
 import mlx.core as mx
+import mlx.nn as nn
 import numpy as np
 import soundfile as sf
 
@@ -82,6 +83,17 @@ def load(model_path: Union[str, Path], dtype=mx.bfloat16) -> Audio8TTS:
 
     model = ArkttsModel(config)
 
+    # Auto-quantize model if quantization metadata is present
+    quant_info = cfg_dict.get("quantization")
+    if quant_info:
+        from .quantization import get_quantization_predicate
+        group_size = int(quant_info.get("group_size", 64))
+        bits = int(quant_info.get("bits", 8))
+        mode = quant_info.get("mode", "affine")
+        policy = quant_info.get("policy", "sensitive-bf16")
+        predicate = get_quantization_predicate(group_size=group_size, policy=policy)
+        nn.quantize(model, group_size=group_size, bits=bits, mode=mode, class_predicate=predicate)
+
     # Load LM weights from model.safetensors
     model_safetensors = model_dir / "model.safetensors"
     if model_safetensors.exists():
@@ -89,7 +101,10 @@ def load(model_path: Union[str, Path], dtype=mx.bfloat16) -> Audio8TTS:
         clean_weights = {}
         for k, v in weights.items():
             new_k = k[6:] if k.startswith("model.") else k
-            clean_weights[new_k] = v.astype(dtype)
+            if v.dtype == mx.uint32:
+                clean_weights[new_k] = v
+            else:
+                clean_weights[new_k] = v.astype(dtype)
         model.load_weights(list(clean_weights.items()), strict=False)
 
     # Load Codec weights from codec.safetensors
